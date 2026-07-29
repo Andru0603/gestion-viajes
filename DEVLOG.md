@@ -14,4 +14,10 @@ Decisión: preferí tener algo concreto montado antes de esa conversación, para
 
 Próximo paso: hablar con ella y ajustar módulos y tablas según lo que cuente
 
-hola
+## 28-29 de julio de 2026
+
+Configuré el repositorio en GitHub. Al hacer el primer push, la estructura quedó anidada en una carpeta extra, en vez de los archivos en la raíz
+
+Diagnóstico: el commit se había hecho un nivel de carpeta más arriba de donde debía. Solución: identifiqué la carpeta correcta (donde estaban pom.xml y README.md sueltos), reinicié el repositorio ahí mismo, y reemplacé el push anterior con --force, ya que era mi propio repositorio recién creado
+
+Aprendizaje: verificar siempre, antes de un git init, que estoy parado exactamente en la carpeta raíz del proyecto, revisando con ls o dir. Es un error común pero fácil de prevenir
