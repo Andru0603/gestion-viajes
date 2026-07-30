@@ -21,3 +21,21 @@ Configuré el repositorio en GitHub. Al hacer el primer push, la estructura qued
 Diagnóstico: el commit se había hecho un nivel de carpeta más arriba de donde debía. Solución: identifiqué la carpeta correcta (donde estaban pom.xml y README.md sueltos), reinicié el repositorio ahí mismo, y reemplacé el push anterior con --force, ya que era mi propio repositorio recién creado
 
 Aprendizaje: verificar siempre, antes de un git init, que estoy parado exactamente en la carpeta raíz del proyecto, revisando con ls o dir. Es un error común pero fácil de prevenir
+
+## 29 de julio de 2026
+
+Agregué las clases de entidad en Java (JPA) para las 5 tablas: Usuario, Cliente, Paquete, Reserva y Pago. Cada una mapea directamente a su tabla en MySQL, y Reserva y Pago ya incluyen las relaciones hacia las demás tablas (una reserva pertenece a un cliente y a un paquete; un pago pertenece a una reserva).
+
+Decisión: dejé que Hibernate genere las tablas automáticamente a partir de estas clases (ddl-auto=update), en vez de ejecutar el schema.sql a mano. Así evito mantener dos fuentes de verdad para la misma estructura.
+
+Próximo paso: crear la base de datos vacía en MySQL y correr el proyecto por primera vez para confirmar que las tablas se generan bien.
+
+## 29 de julio de 2026
+
+Sesión larga de configuración del entorno para correr el proyecto por primera vez. Resolví varios problemas en cadena:
+
+1. Maven no estaba instalado. Lo instalé manualmente y tuve que reiniciar VS Code por completo para que reconociera el cambio en el PATH.
+2. La conexión a MySQL 8.4 fallaba con un error confuso de Hibernate. La causa real era que mi instancia corre en el puerto 6033, no el 3306 por defecto, y necesitaba parámetros adicionales en la URL de conexión por el método de autenticación de MySQL 8.4.
+3. Mientras probaba cambios en application.properties, parecían "borrarse solos". La causa era confusión entre el archivo real en src y la copia que Maven genera en target en cada build.
+
+Al final, Hibernate creó las 5 tablas automáticamente con sus llaves foráneas. Aprendizaje: los errores de Hibernate rara vez muestran la causa real en el primer mensaje, hay que leer las causas encadenadas de abajo hacia arriba.
