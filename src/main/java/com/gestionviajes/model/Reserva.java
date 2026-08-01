@@ -1,6 +1,7 @@
 package com.gestionviajes.model;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -24,11 +25,18 @@ public class Reserva {
     @JoinColumn(name = "paquete_id", nullable = false)
     private Paquete paquete;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "proveedor_id")
+    private Proveedor proveedor;
+
     @Column(name = "fecha_viaje")
     private LocalDate fechaViaje;
 
     @Column(name = "num_personas", nullable = false)
     private Integer numPersonas = 1;
+
+    @Column(name = "precio_total", precision = 12, scale = 2)
+    private BigDecimal precioTotal;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
@@ -71,6 +79,14 @@ public class Reserva {
         this.paquete = paquete;
     }
 
+    public Proveedor getProveedor() {
+        return proveedor;
+    }
+
+    public void setProveedor(Proveedor proveedor) {
+        this.proveedor = proveedor;
+    }
+
     public LocalDate getFechaViaje() {
         return fechaViaje;
     }
@@ -85,6 +101,14 @@ public class Reserva {
 
     public void setNumPersonas(Integer numPersonas) {
         this.numPersonas = numPersonas;
+    }
+
+    public BigDecimal getPrecioTotal() {
+        return precioTotal;
+    }
+
+    public void setPrecioTotal(BigDecimal precioTotal) {
+        this.precioTotal = precioTotal;
     }
 
     public Estado getEstado() {

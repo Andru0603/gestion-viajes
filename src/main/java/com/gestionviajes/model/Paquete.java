@@ -7,6 +7,10 @@ import java.math.BigDecimal;
 @Table(name = "paquetes")
 public class Paquete {
 
+    public enum MedioTransporte {
+        AEREO, TERRESTRE
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -19,6 +23,10 @@ public class Paquete {
 
     @Column(columnDefinition = "TEXT")
     private String descripcion;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "medio_transporte", length = 20)
+    private MedioTransporte medioTransporte;
 
     @Column(name = "precio_base", nullable = false, precision = 12, scale = 2)
     private BigDecimal precioBase;
@@ -62,6 +70,14 @@ public class Paquete {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public MedioTransporte getMedioTransporte() {
+        return medioTransporte;
+    }
+
+    public void setMedioTransporte(MedioTransporte medioTransporte) {
+        this.medioTransporte = medioTransporte;
     }
 
     public BigDecimal getPrecioBase() {
