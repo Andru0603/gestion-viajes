@@ -56,7 +56,7 @@ Decisión: actualicé las clases Paquete y Reserva, y agregué Proveedor, en vez
 
 Aprendizaje: el diseño inicial basado en suposiciones generales fue un punto de partida razonable, pero la conversación real con la usuaria fue la que reveló los detalles que de verdad importan para que la herramienta sea útil.
 
-## 1-2 de agosto de 2026
+## 1 de agosto de 2026 temprano
 
 Al probar el endpoint de pagos, el servidor devolvía un error 500 sin explicación clara desde PowerShell. El detalle real estaba en los logs del servidor: Jackson (la libreria que convierte objetos Java a JSON) no sabía cómo manejar los "proxies" que crea Hibernate para las relaciones cargadas de forma perezosa (lazy).
 
@@ -64,4 +64,30 @@ Solución: agregué la librería jackson-datatype-hibernate6 y una clase de conf
 
 Aprendizaje: cuando un endpoint falla con un error genérico, el mensaje útil casi nunca está en la respuesta que ve el cliente, está en la consola del servidor. Este es un problema bien conocido en el ecosistema Spring Boot, no algo que hice mal por inexperiencia.
 
-PENDIENTE INTERFAZ DIA 2 DE AGOSTO
+
+
+## 1 de agosto de 2026 (continuación)
+
+Completé los repositorios y controladores REST para las 5 entidades del negocio (clientes, paquetes, proveedores, reservas, pagos), con crear, listar, editar y borrar para cada una.
+
+Decisión técnica: en Reserva y Pago, que dependen de otras entidades, el controlador busca esos registros por su id en la base de datos antes de guardar, en vez de confiar directamente en lo que llega en la petición. Esto evita inconsistencias si algo llega mal formado.
+
+También me detuve a pensar en algo no técnico: si usar IA como apoyo en el desarrollo compromete la autenticidad de este trabajo de grado. Concluí que lo que importa no es que cada línea la haya escrito yo a mano, sino que entienda lo que hay aquí y pueda explicarlo. Queda pendiente confirmar con la institución si existe alguna política formal sobre esto.
+
+Aprendizaje: escribir el mismo patrón (repositorio + controlador) cinco veces seguidas hizo que dejara de sentirse como copiar y empezara a sentirse como reconocer una estructura repetible, que es distinto.
+
+## 2 de agosto de 2026
+
+Construí la interfaz web completa: cinco secciones, cada una con su formulario y su tabla, conectadas a la API con JavaScript, sin frameworks adicionales.
+
+Decisión de diseño: en vez de un panel administrativo genérico, usé el lenguaje visual de tiquetes y manifiestos de viaje. No fue solo estético: el campo de nombre del cliente tiene una nota visual que recuerda que debe coincidir exacto con el documento, un recordatorio directo del hallazgo más importante de la conversación con la dueña del negocio.
+
+Aprendizaje: diseñar a partir del hallazgo real de la usuaria, y no de una plantilla genérica, hizo que una decisión de diseño tuviera una razón de ser concreta, en vez de ser solo decoración.
+
+## 2 de agosto de 2026 (continuación)
+
+Agregué dos piezas que faltaban para que el sistema fuera realmente usable: cambiar el estado de una reserva sin borrarla y recrearla, y un sistema de inicio de sesión con contraseñas cifradas.
+
+Decisión consciente: para simplificar el inicio de sesión, desactivé una protección llamada CSRF, que importa más en aplicaciones expuestas a internet con muchos usuarios. Mientras el sistema corra en mi computador o en la red de mi suegra, el riesgo real es bajo, pero si algún día lo despliego en internet tengo que revisar esto de nuevo. Lo documento para que quede claro que fue una decisión, no un descuido.
+
+Aprendizaje: no todas las decisiones técnicas tienen una única respuesta correcta, muchas son sobre qué riesgo es razonable asumir en el contexto específico del proyecto.

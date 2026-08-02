@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ingresar &mdash; Manifiesto de viajes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Work+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/estilos.css">
+<style>
+    body { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .caja-login { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 2rem; max-width: 360px; width: 100%; }
+    .caja-login .sello-marca { font-size: 1.8rem; display: block; margin-bottom: 0.5rem; }
+    .caja-login h1 { font-size: 1.3rem; }
+    .caja-login form { margin-top: 1.25rem; }
+    .error-login { color: var(--terracotta); font-size: 0.85rem; margin: 0.75rem 0 0; }
+</style>
+</head>
+<body>
+    <div class="caja-login">
+        <span class="sello-marca">&#9992;</span>
+        <h1>Manifiesto de viajes</h1>
+        <p class="subtitulo">Ingresa para continuar</p>
+        <form method="POST" action="/login">
+            <label>Correo
+                <input type="email" name="username" required autofocus>
+            </label>
+            <label>Contraseña
+                <input type="password" name="password" required>
+            </label>
+            <button type="submit" class="boton-guardar">Ingresar</button>
+        </form>
+        <p class="error-login" id="mensaje-error" style="display:none;">Correo o contraseña incorrectos</p>
+    </div>
+    <script>
+        if (new URLSearchParams(window.location.search).has('error')) {
+            document.getElementById('mensaje-error').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
