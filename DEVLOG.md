@@ -55,3 +55,11 @@ Cambios que no había contemplado:
 Decisión: actualicé las clases Paquete y Reserva, y agregué Proveedor, en vez de rediseñar todo desde cero.
 
 Aprendizaje: el diseño inicial basado en suposiciones generales fue un punto de partida razonable, pero la conversación real con la usuaria fue la que reveló los detalles que de verdad importan para que la herramienta sea útil.
+
+## 1-2 de agosto de 2026
+
+Al probar el endpoint de pagos, el servidor devolvía un error 500 sin explicación clara desde PowerShell. El detalle real estaba en los logs del servidor: Jackson (la libreria que convierte objetos Java a JSON) no sabía cómo manejar los "proxies" que crea Hibernate para las relaciones cargadas de forma perezosa (lazy).
+
+Solución: agregué la librería jackson-datatype-hibernate6 y una clase de configuración que le enseña a Jackson a reconocer esos proxies y, en vez de fallar, mostrar solo el id del objeto relacionado si no fue cargado completo.
+
+Aprendizaje: cuando un endpoint falla con un error genérico, el mensaje útil casi nunca está en la respuesta que ve el cliente, está en la consola del servidor. Este es un problema bien conocido en el ecosistema Spring Boot, no algo que hice mal por inexperiencia.
