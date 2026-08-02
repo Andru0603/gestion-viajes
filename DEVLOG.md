@@ -63,3 +63,5 @@ Al probar el endpoint de pagos, el servidor devolvía un error 500 sin explicaci
 Solución: agregué la librería jackson-datatype-hibernate6 y una clase de configuración que le enseña a Jackson a reconocer esos proxies y, en vez de fallar, mostrar solo el id del objeto relacionado si no fue cargado completo.
 
 Aprendizaje: cuando un endpoint falla con un error genérico, el mensaje útil casi nunca está en la respuesta que ve el cliente, está en la consola del servidor. Este es un problema bien conocido en el ecosistema Spring Boot, no algo que hice mal por inexperiencia.
+
+PENDIENTE INTERFAZ DIA 2 DE AGOSTO

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manifiesto de viajes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Work+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+<div class="hoja">
+
+    <header class="cabecera">
+        <div class="marca">
+            <span class="sello-marca">&#9992;</span>
+            <div>
+                <h1>Manifiesto de viajes</h1>
+                <p class="subtitulo">Clientes, paquetes, proveedores, reservas y pagos, en un solo lugar</p>
+            </div>
+        </div>
+    </header>
+
+    <nav class="talonarios" aria-label="Secciones">
+        <button class="talon activo" data-seccion="clientes" type="button">01 &middot; Clientes</button>
+        <button class="talon" data-seccion="paquetes" type="button">02 &middot; Paquetes</button>
+        <button class="talon" data-seccion="proveedores" type="button">03 &middot; Proveedores</button>
+        <button class="talon" data-seccion="reservas" type="button">04 &middot; Reservas</button>
+        <button class="talon" data-seccion="pagos" type="button">05 &middot; Pagos</button>
+    </nav>
+
+    <main>
+
+        <section id="seccion-clientes" class="seccion activa">
+            <div class="panel-formulario">
+                <h2>Nuevo cliente</h2>
+                <p class="nota-precision">El nombre debe quedar exactamente igual al documento de identidad. Un error aquí genera cobro de la aerolínea.</p>
+                <form id="form-clientes">
+                    <label>Nombre completo
+                        <input type="text" name="nombre" required>
+                    </label>
+                    <label>Documento
+                        <input type="text" name="documento">
+                    </label>
+                    <label>Teléfono
+                        <input type="text" name="telefono">
+                    </label>
+                    <label>Correo
+                        <input type="email" name="email">
+                    </label>
+                    <label class="campo-ancho">Notas
+                        <textarea name="notas" rows="2"></textarea>
+                    </label>
+                    <button type="submit" class="boton-guardar">Guardar cliente</button>
+                </form>
+            </div>
+            <div class="panel-lista">
+                <h2>Clientes registrados</h2>
+                <table>
+                    <thead>
+                        <tr><th>Nombre</th><th>Documento</th><th>Teléfono</th><th>Correo</th><th></th></tr>
+                    </thead>
+                    <tbody id="tabla-clientes"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="seccion-paquetes" class="seccion">
+            <div class="panel-formulario">
+                <h2>Nuevo paquete</h2>
+                <form id="form-paquetes">
+                    <label>Nombre
+                        <input type="text" name="nombre" required>
+                    </label>
+                    <label>Destino
+                        <input type="text" name="destino">
+                    </label>
+                    <label>Medio de transporte
+                        <select name="medioTransporte">
+                            <option value="AEREO">Aéreo</option>
+                            <option value="TERRESTRE">Terrestre</option>
+                        </select>
+                    </label>
+                    <label>Precio base
+                        <input type="number" name="precioBase" step="1000" required>
+                    </label>
+                    <label>Duración (días)
+                        <input type="number" name="duracionDias">
+                    </label>
+                    <label>Cupo máximo
+                        <input type="number" name="cupoMaximo">
+                    </label>
+                    <label class="campo-ancho">Descripción
+                        <textarea name="descripcion" rows="2"></textarea>
+                    </label>
+                    <button type="submit" class="boton-guardar">Guardar paquete</button>
+                </form>
+            </div>
+            <div class="panel-lista">
+                <h2>Paquetes disponibles</h2>
+                <table>
+                    <thead>
+                        <tr><th>Nombre</th><th>Destino</th><th>Transporte</th><th>Precio base</th><th>Días</th><th></th></tr>
+                    </thead>
+                    <tbody id="tabla-paquetes"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="seccion-proveedores" class="seccion">
+            <div class="panel-formulario">
+                <h2>Nuevo proveedor</h2>
+                <form id="form-proveedores">
+                    <label>Nombre de la agencia
+                        <input type="text" name="nombre" required>
+                    </label>
+                    <label>Teléfono
+                        <input type="text" name="telefono">
+                    </label>
+                    <label class="campo-ancho">Notas
+                        <textarea name="notas" rows="2" placeholder="Confiabilidad, tiempos de respuesta, condiciones..."></textarea>
+                    </label>
+                    <button type="submit" class="boton-guardar">Guardar proveedor</button>
+                </form>
+            </div>
+            <div class="panel-lista">
+                <h2>Agencias proveedoras</h2>
+                <table>
+                    <thead>
+                        <tr><th>Nombre</th><th>Teléfono</th><th>Notas</th><th></th></tr>
+                    </thead>
+                    <tbody id="tabla-proveedores"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="seccion-reservas" class="seccion">
+            <div class="panel-formulario">
+                <h2>Nueva reserva</h2>
+                <form id="form-reservas">
+                    <label>Cliente
+                        <select name="cliente" id="select-cliente" required></select>
+                    </label>
+                    <label>Paquete
+                        <select name="paquete" id="select-paquete" required></select>
+                    </label>
+                    <label>Proveedor
+                        <select name="proveedor" id="select-proveedor">
+                            <option value="">Sin definir todavía</option>
+                        </select>
+                    </label>
+                    <label>Fecha de viaje
+                        <input type="date" name="fechaViaje">
+                    </label>
+                    <label>Número de personas
+                        <input type="number" name="numPersonas" value="1" min="1" required>
+                    </label>
+                    <label>Precio total
+                        <input type="number" name="precioTotal" step="1000">
+                    </label>
+                    <label>Estado
+                        <select name="estado">
+                            <option value="COTIZADO">Cotizado</option>
+                            <option value="CONFIRMADO">Confirmado</option>
+                            <option value="PAGADO">Pagado</option>
+                            <option value="CANCELADO">Cancelado</option>
+                        </select>
+                    </label>
+                    <button type="submit" class="boton-guardar">Guardar reserva</button>
+                </form>
+            </div>
+            <div class="panel-lista">
+                <h2>Reservas</h2>
+                <table>
+                    <thead>
+                        <tr><th>Cliente</th><th>Paquete</th><th>Fecha</th><th>Personas</th><th>Precio</th><th>Estado</th><th></th></tr>
+                    </thead>
+                    <tbody id="tabla-reservas"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="seccion-pagos" class="seccion">
+            <div class="panel-formulario">
+                <h2>Nuevo pago</h2>
+                <form id="form-pagos">
+                    <label>Reserva
+                        <select name="reserva" id="select-reserva" required></select>
+                    </label>
+                    <label>Monto
+                        <input type="number" name="monto" step="1000" required>
+                    </label>
+                    <label>Fecha
+                        <input type="date" name="fecha" required>
+                    </label>
+                    <label>Método de pago
+                        <input type="text" name="metodoPago" placeholder="Transferencia, efectivo...">
+                    </label>
+                    <label class="campo-ancho">Notas
+                        <textarea name="notas" rows="2"></textarea>
+                    </label>
+                    <button type="submit" class="boton-guardar">Guardar pago</button>
+                </form>
+            </div>
+            <div class="panel-lista">
+                <h2>Pagos registrados</h2>
+                <table>
+                    <thead>
+                        <tr><th>Reserva</th><th>Monto</th><th>Fecha</th><th>Método</th><th></th></tr>
+                    </thead>
+                    <tbody id="tabla-pagos"></tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+</div>
+<script src="js/app.js"></script>
+</body>
+</html>
