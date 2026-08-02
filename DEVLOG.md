@@ -39,3 +39,19 @@ Sesión larga de configuración del entorno para correr el proyecto por primera 
 3. Mientras probaba cambios en application.properties, parecían "borrarse solos". La causa era confusión entre el archivo real en src y la copia que Maven genera en target en cada build.
 
 Al final, Hibernate creó las 5 tablas automáticamente con sus llaves foráneas. Aprendizaje: los errores de Hibernate rara vez muestran la causa real en el primer mensaje, hay que leer las causas encadenadas de abajo hacia arriba.
+
+## 30 de julio de 2026
+
+Tuve la conversación real con mi suegra sobre su negocio. Esto confirmó algunas cosas del diseño inicial y cambió otras.
+
+Confirmado: sigue todo en WhatsApp y cuadernos, sin ningún sistema digital. Sí maneja abonos y pagos parciales.
+
+Cambios que no había contemplado:
+- No trabaja directo con aerolíneas ni hoteles, sino a través de varias agencias mayoristas (Viassa, Hoteles y Destinos, Destino y Prestigio, On Vacation, The Best). Esto significó agregar una entidad Proveedor que no existía en el diseño original.
+- Vende tanto viajes aéreos como terrestres en bus, algo que el diseño original no distinguía.
+- El mayor punto de dolor no es la desorganización general, sino la digitación exacta de nombres: un error tipográfico genera un cobro de la aerolínea. Esto no cambió la base de datos hoy, pero marca una prioridad clara para cuando construya el formulario de clientes.
+- El precio de una reserva no es fijo por paquete, varía según cuándo se reserve y con qué proveedor, así que agregué un precio total directo en la reserva en vez de depender solo del precio base del paquete.
+
+Decisión: actualicé las clases Paquete y Reserva, y agregué Proveedor, en vez de rediseñar todo desde cero.
+
+Aprendizaje: el diseño inicial basado en suposiciones generales fue un punto de partida razonable, pero la conversación real con la usuaria fue la que reveló los detalles que de verdad importan para que la herramienta sea útil.
