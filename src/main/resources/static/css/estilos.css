@@ -283,3 +283,28 @@ select.sello:focus-visible {
     text-decoration: none;
     display: inline-block;
 }
+
+button.editar {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 0.75rem;
+    background: none;
+    border: 1px solid var(--line);
+    color: var(--turquoise);
+    border-radius: var(--radius);
+    padding: 0.3rem 0.55rem;
+    cursor: pointer;
+    margin-right: 4px;
+}
+button.editar:hover { background: var(--turquoise); color: var(--card); border-color: var(--turquoise); }
+
+.boton-cancelar {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 0.8rem;
+    background: none;
+    border: none;
+    color: var(--ink-muted);
+    cursor: pointer;
+    padding: 0.4rem 0;
+    margin-left: 0.5rem;
+    text-decoration: underline;
+}

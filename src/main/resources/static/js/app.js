@@ -5,6 +5,10 @@ let paquetesCache = [];
 let proveedoresCache = [];
 let reservasCache = [];
 
+let editandoClienteId = null;
+let editandoPaqueteId = null;
+let editandoProveedorId = null;
+
 /* ===== Utilidades de red ===== */
 
 async function obtener(recurso) {
@@ -49,6 +53,28 @@ function poblarSelect(id, items, textoOpcion, placeholder) {
     select.innerHTML = vacio + items.map(i => `<option value="${i.id}">${textoOpcion(i)}</option>`).join('');
 }
 
+/* ===== Utilidades de modo edicion (compartidas por clientes, paquetes, proveedores) ===== */
+
+function activarModoEdicion(form, textoBoton, funcionCancelar) {
+    form.querySelector('.boton-guardar').textContent = textoBoton;
+    let cancelar = form.querySelector('.boton-cancelar');
+    if (!cancelar) {
+        cancelar = document.createElement('button');
+        cancelar.type = 'button';
+        cancelar.className = 'boton-cancelar';
+        form.querySelector('.boton-guardar').insertAdjacentElement('afterend', cancelar);
+    }
+    cancelar.textContent = 'Cancelar edición';
+    cancelar.onclick = funcionCancelar;
+    cancelar.style.display = 'inline-block';
+}
+
+function desactivarModoEdicion(form, textoBoton) {
+    form.querySelector('.boton-guardar').textContent = textoBoton;
+    const cancelar = form.querySelector('.boton-cancelar');
+    if (cancelar) cancelar.style.display = 'none';
+}
+
 /* ===== Navegacion entre secciones ===== */
 
 document.querySelectorAll('.talon').forEach(boton => {
@@ -71,11 +97,35 @@ async function cargarClientes() {
             <td>${c.documento ?? ''}</td>
             <td>${c.telefono ?? ''}</td>
             <td>${c.email ?? ''}</td>
-            <td><button class="borrar" onclick="borrarCliente(${c.id})">Eliminar</button></td>
+            <td>
+                <button class="editar" onclick="iniciarEdicionCliente(${c.id})">Editar</button>
+                <button class="borrar" onclick="borrarCliente(${c.id})">Eliminar</button>
+            </td>
         </tr>
     `).join('') : '<tr><td colspan="5" class="vacio">Todavía no hay clientes registrados</td></tr>';
 
     poblarSelect('select-cliente', clientesCache, c => c.nombre);
+}
+
+function iniciarEdicionCliente(id) {
+    const cliente = clientesCache.find(c => c.id === id);
+    if (!cliente) return;
+    const form = document.getElementById('form-clientes');
+    form.nombre.value = cliente.nombre || '';
+    form.documento.value = cliente.documento || '';
+    form.telefono.value = cliente.telefono || '';
+    form.email.value = cliente.email || '';
+    form.notas.value = cliente.notas || '';
+    editandoClienteId = id;
+    activarModoEdicion(form, 'Actualizar cliente', cancelarEdicionCliente);
+    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function cancelarEdicionCliente() {
+    editandoClienteId = null;
+    const form = document.getElementById('form-clientes');
+    form.reset();
+    desactivarModoEdicion(form, 'Guardar cliente');
 }
 
 async function borrarCliente(id) {
@@ -87,8 +137,13 @@ async function borrarCliente(id) {
 document.getElementById('form-clientes').addEventListener('submit', async e => {
     e.preventDefault();
     const datos = Object.fromEntries(new FormData(e.target));
-    await crear('clientes', datos);
-    e.target.reset();
+    if (editandoClienteId) {
+        await actualizar('clientes', editandoClienteId, datos);
+        cancelarEdicionCliente();
+    } else {
+        await crear('clientes', datos);
+        e.target.reset();
+    }
     cargarClientes();
 });
 
@@ -104,11 +159,37 @@ async function cargarPaquetes() {
             <td>${p.medioTransporte === 'AEREO' ? 'Aéreo' : p.medioTransporte === 'TERRESTRE' ? 'Terrestre' : ''}</td>
             <td class="precio">$${Number(p.precioBase).toLocaleString('es-CO')}</td>
             <td>${p.duracionDias ?? ''}</td>
-            <td><button class="borrar" onclick="borrarPaquete(${p.id})">Eliminar</button></td>
+            <td>
+                <button class="editar" onclick="iniciarEdicionPaquete(${p.id})">Editar</button>
+                <button class="borrar" onclick="borrarPaquete(${p.id})">Eliminar</button>
+            </td>
         </tr>
     `).join('') : '<tr><td colspan="6" class="vacio">Todavía no hay paquetes registrados</td></tr>';
 
     poblarSelect('select-paquete', paquetesCache, p => `${p.nombre} (${p.destino ?? 'sin destino'})`);
+}
+
+function iniciarEdicionPaquete(id) {
+    const p = paquetesCache.find(x => x.id === id);
+    if (!p) return;
+    const form = document.getElementById('form-paquetes');
+    form.nombre.value = p.nombre || '';
+    form.destino.value = p.destino || '';
+    form.descripcion.value = p.descripcion || '';
+    form.medioTransporte.value = p.medioTransporte || 'AEREO';
+    form.precioBase.value = p.precioBase ?? '';
+    form.duracionDias.value = p.duracionDias ?? '';
+    form.cupoMaximo.value = p.cupoMaximo ?? '';
+    editandoPaqueteId = id;
+    activarModoEdicion(form, 'Actualizar paquete', cancelarEdicionPaquete);
+    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function cancelarEdicionPaquete() {
+    editandoPaqueteId = null;
+    const form = document.getElementById('form-paquetes');
+    form.reset();
+    desactivarModoEdicion(form, 'Guardar paquete');
 }
 
 async function borrarPaquete(id) {
@@ -129,8 +210,13 @@ document.getElementById('form-paquetes').addEventListener('submit', async e => {
         duracionDias: form.get('duracionDias') ? parseInt(form.get('duracionDias')) : null,
         cupoMaximo: form.get('cupoMaximo') ? parseInt(form.get('cupoMaximo')) : null
     };
-    await crear('paquetes', datos);
-    e.target.reset();
+    if (editandoPaqueteId) {
+        await actualizar('paquetes', editandoPaqueteId, datos);
+        cancelarEdicionPaquete();
+    } else {
+        await crear('paquetes', datos);
+        e.target.reset();
+    }
     cargarPaquetes();
 });
 
@@ -144,11 +230,33 @@ async function cargarProveedores() {
             <td>${p.nombre}</td>
             <td>${p.telefono ?? ''}</td>
             <td>${p.notas ?? ''}</td>
-            <td><button class="borrar" onclick="borrarProveedor(${p.id})">Eliminar</button></td>
+            <td>
+                <button class="editar" onclick="iniciarEdicionProveedor(${p.id})">Editar</button>
+                <button class="borrar" onclick="borrarProveedor(${p.id})">Eliminar</button>
+            </td>
         </tr>
     `).join('') : '<tr><td colspan="4" class="vacio">Todavía no hay proveedores registrados</td></tr>';
 
     poblarSelect('select-proveedor', proveedoresCache, p => p.nombre, 'Sin definir todavía');
+}
+
+function iniciarEdicionProveedor(id) {
+    const p = proveedoresCache.find(x => x.id === id);
+    if (!p) return;
+    const form = document.getElementById('form-proveedores');
+    form.nombre.value = p.nombre || '';
+    form.telefono.value = p.telefono || '';
+    form.notas.value = p.notas || '';
+    editandoProveedorId = id;
+    activarModoEdicion(form, 'Actualizar proveedor', cancelarEdicionProveedor);
+    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function cancelarEdicionProveedor() {
+    editandoProveedorId = null;
+    const form = document.getElementById('form-proveedores');
+    form.reset();
+    desactivarModoEdicion(form, 'Guardar proveedor');
 }
 
 async function borrarProveedor(id) {
@@ -160,8 +268,13 @@ async function borrarProveedor(id) {
 document.getElementById('form-proveedores').addEventListener('submit', async e => {
     e.preventDefault();
     const datos = Object.fromEntries(new FormData(e.target));
-    await crear('proveedores', datos);
-    e.target.reset();
+    if (editandoProveedorId) {
+        await actualizar('proveedores', editandoProveedorId, datos);
+        cancelarEdicionProveedor();
+    } else {
+        await crear('proveedores', datos);
+        e.target.reset();
+    }
     cargarProveedores();
 });
 

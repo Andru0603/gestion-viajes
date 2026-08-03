@@ -91,3 +91,27 @@ Agregué dos piezas que faltaban para que el sistema fuera realmente usable: cam
 Decisión consciente: para simplificar el inicio de sesión, desactivé una protección llamada CSRF, que importa más en aplicaciones expuestas a internet con muchos usuarios. Mientras el sistema corra en mi computador o en la red de mi suegra, el riesgo real es bajo, pero si algún día lo despliego en internet tengo que revisar esto de nuevo. Lo documento para que quede claro que fue una decisión, no un descuido.
 
 Aprendizaje: no todas las decisiones técnicas tienen una única respuesta correcta, muchas son sobre qué riesgo es razonable asumir en el contexto específico del proyecto.
+
+## 2 de agosto de 2026 (definición del eje)
+
+Trabajé en definir el eje de sistematización, en vez de dejarlo implícito. Descubrí que "sistematización de experiencias" no es un término inventado por la IUD, sino una metodología con trayectoria en educación popular latinoamericana, desarrollada principalmente por Oscar Jara, con una estructura reconocida de "cinco tiempos": punto de partida, preguntas iniciales (el eje), recuperación del proceso vivido, reflexión de fondo y puntos de llegada.
+
+Definí el eje como: cómo se construye conocimiento real, tanto sobre lo que el usuario necesita como sobre el código que uno produce con ayuda de IA, al desarrollar una herramienta para un negocio familiar. Elegí la versión combinada en vez de quedarme con uno solo de los dos hilos, porque ambos aparecieron en el mismo proceso real y se sostienen mejor juntos que separados.
+
+Aprendizaje: tener un eje claro no es un trámite de redacción, cambia qué se vuelve relevante contar y qué se puede dejar de lado. Sin él, la recuperación del proceso corre el riesgo de ser solo una lista de cosas que pasaron.
+
+## 2 de agosto de 2026 (continuación — cambio de contraseña y edición completa)
+
+Agregué la posibilidad de cambiar la contraseña ya autenticado, y edición sin borrar para clientes, paquetes y proveedores, que antes solo se podían crear o eliminar.
+
+Decisión motivada directamente por el hallazgo de la usuaria: si el error más costoso es un nombre mal escrito, no tenía sentido que la única forma de corregirlo fuera borrar el cliente completo y recrearlo, sobre todo si ya tenía una reserva asociada.
+
+También revisé, sin resolver todavía, el riesgo de haber desactivado la protección CSRF de Spring Security. Es razonable mientras el sistema corra en local, pero queda como pendiente explícito antes de pensar en desplegarlo a internet para uso real de mi suegra.
+
+Aprendizaje: revisar las decisiones técnicas anteriores a la luz de lo que realmente le importa al usuario fue lo que hizo evidente qué faltaba, más que seguir una lista genérica de funcionalidades "típicas" de un CRUD.
+
+## 2 de agosto de 2026 (continuación — organización del trabajo)
+
+La conversación con Claude llevaba ya varias semanas de desarrollo continuo y empezó a chocar seguido con el límite de mensajes de una sola sesión. En vez de seguir ahí indefinidamente, decidí migrar el trabajo a un Proyecto de Claude, con un documento resumen del estado del proyecto y unas instrucciones personalizadas, para que cualquier chat nuevo pueda retomar el contexto sin reconstruir todo desde cero.
+
+Aprendizaje: la forma de trabajar con una herramienta de IA en un proyecto largo también es una decisión de proceso, no solo un detalle logístico. Documentar cómo se organizó ese trabajo es parte legítima de la experiencia que se está sistematizando, no algo aparte de ella.
