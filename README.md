@@ -1,4 +1,4 @@
-# Gestión de viajes
+# Manifiesto de viajes
 
 Sistema de gestión de reservas y clientes para un negocio de venta de paquetes de viaje.
 
